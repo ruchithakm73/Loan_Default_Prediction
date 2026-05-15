@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Default Prediction</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="/">LoanPredict</a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                    <li class="nav-item"><a class="nav-link text-white" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#features">Features</a></li>
+                   
+                    <li class="nav-item">
+                        <a class="btn btn-glow ms-lg-2" href="/predict">Start Prediction</a>
+                    </li>
+
+                    {% if session.get('user_id') %}
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>{{ session.get('username', 'User') }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" href="/change-password"><i class="bi bi-key me-2"></i>Change Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light ms-lg-2" href="/welcome">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="badge glass-badge mb-3">AI + Finance + Risk Analysis</span>
+                    <h1 class="display-4 fw-bold text-white hero-title">
+                        Smart Loan Default Prediction System
+                    </h1>
+                    <p class="lead text-light mt-3">
+                        Predict borrower risk using machine learning and make better financial decisions with a modern analytics dashboard.
+                    </p>
+                    <div class="mt-4 d-flex flex-wrap gap-3">
+                        <a href="/predict" class="btn btn-glow btn-lg">Predict Now</a>
+                        <a href="#about" class="btn btn-outline-light btn-lg rounded-pill px-4">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 text-center" data-aos="zoom-in">
+                    <div class="hero-card mx-auto">
+                        <div class="icon-circle"><i class="bi bi-bar-chart-line-fill"></i></div>
+                        <h3 class="text-white mt-3">Risk Intelligence</h3>
+                        <p class="text-light">
+                            Analyze applicant details, predict default probability, and visualize results in an elegant dashboard.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="glass-card p-4">
+                        <h2 class="section-title">About the Project</h2>
+                        <p class="section-text">
+                            Loan default prediction helps financial institutions identify whether an applicant is likely to repay a loan or become risky in the future.
+                        </p>
+                        <p class="section-text">
+                            This project uses borrower information such as income, loan amount, credit score, employment, and debt details to predict risk level using machine learning.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-4">
+                        <h2 class="section-title">Why It Matters</h2>
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Faster loan assessment</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Reduced financial risk</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Better lending decisions</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Data-driven borrower evaluation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding pt-0">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title text-white">Project Features</h2>
+                <p class="text-light">Modern UI with intelligent prediction support</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up">
+                    <div class="glass-card feature-card text-center h-100">
+                        <div class="feature-icon"><i class="bi bi-cpu-fill"></i></div>
+                        <h5>ML Prediction</h5>
+                        <p>Predict whether a borrower is low risk or high risk.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card feature-card text-center h-100">
+                        <div class="feature-icon"><i class="bi bi-ui-checks-grid"></i></div>
+                        <h5>Responsive Design</h5>
+                        <p>Works smoothly on desktop, tablet, and mobile devices.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card feature-card text-center h-100">
+                        <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                        <h5>Analytics Dashboard</h5>
+                        <p>View results, trends, and past predictions in one place.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card feature-card text-center h-100">
+                        <div class="feature-icon"><i class="bi bi-shield-lock-fill"></i></div>
+                        <h5>Secure Handling</h5>
+                        <p>Structured backend integration with database support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-padding pt-0">
+        <div class="container" data-aos="zoom-in">
+            <div class="glass-card text-center p-5">
+                <h2 class="text-white fw-bold">Ready to test the prediction system?</h2>
+                <p class="text-light mt-3">Start with borrower details and get an instant risk result.</p>
+                <a href="/predict" class="btn btn-glow btn-lg mt-3">Go to Prediction Form</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-light">
+        <div class="container">
+            <p class="mb-0">© 2026 Loan Default Prediction System | Designed for Finance Project</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

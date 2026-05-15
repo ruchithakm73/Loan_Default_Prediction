@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Loan Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="form-page-bg">
+
+<nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-white" href="/">LoanPredict</a>
+        <div class="navbar-nav ms-auto align-items-center gap-3">
+            <a href="/dashboard" class="btn btn-outline-light">Dashboard</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top:110px; padding-bottom:60px;">
+    <div class="glass-card p-4 mx-auto" style="max-width:1000px;">
+        <h3 class="text-white mb-3">Home Loan Application</h3>
+        <p class="text-light">Complete the form below and upload the required documents.</p>
+
+        <form action="/apply/home" method="POST" enctype="multipart/form-data" onsubmit="return validateApplicationForm(this)" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="text-white">Full Name</label>
+                    <input type="text" name="full_name" class="form-control custom-input" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-white">Date of Birth</label>
+                    <input type="date" name="dob" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Mobile Number</label>
+                    <input type="tel" name="mobile" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Email ID</label>
+                    <input type="email" name="email" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-12">
+                    <label class="text-white">Address</label>
+                    <textarea name="address" class="form-control custom-input" rows="2" required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Aadhaar Number</label>
+                    <input type="text" name="aadhaar" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">PAN Number</label>
+                    <input type="text" name="pan" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Bank Account Number</label>
+                    <input type="text" name="bank_account" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">House Location</label>
+                    <input type="text" name="house_location" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Property Value / Cost (₹)</label>
+                    <input type="number" name="property_value" step="0.01" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Type of Property</label>
+                    <select name="property_type" class="form-control custom-input" required>
+                        <option value="">Select type</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="House">House</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Address Proof (upload)</label>
+                    <input type="file" name="address_proof" accept="image/*,application/pdf" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Property Documents (upload)</label>
+                    <input type="file" name="property_docs" accept="image/*,application/pdf" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Photo Upload</label>
+                    <input type="file" name="photo" accept="image/*" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-white">Signature Upload</label>
+                    <input type="file" name="signature" accept="image/*,application/pdf" class="form-control custom-input" required>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-glow">Submit Home Loan Application</button>
+                    <a href="/loan_selection" class="btn btn-outline-light ms-2">Cancel</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

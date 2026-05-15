@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Form</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="form-page-bg">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-white" href="/">LoanPredict</a>
+        <div class="navbar-nav ms-auto align-items-center gap-3">
+            <!-- User Dropdown -->
+            <!-- <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle me-1"></i>{{ session.get('username', 'User') }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                    <li><a class="dropdown-item" href="/change-password"><i class="bi bi-key me-2"></i>Change Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
+            </div> -->
+            <a href="/" class="btn btn-outline-light">Home</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Form Section -->
+<section class="form-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="glass-card p-5">
+
+                    <div class="text-center mb-4">
+                        <h2 class="text-white fw-bold">Loan Default Prediction</h2>
+                        <p class="text-light">Enter basic details</p>
+                        {% if error %}
+                            <div class="alert alert-danger mt-3">{{ error }}</div>
+                        {% endif %}
+                    </div>
+
+                    <form action="/submit" method="POST" onsubmit="return validatePredictForm(this)" novalidate>
+
+                        <div class="row g-4">
+
+                            <div class="col-md-6">
+                                <label class="text-white">Full Name</label>
+                                <input type="text" name="name" class="form-control custom-input" required value="{{ form_data.name if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Gender</label>
+                                <select name="gender" class="form-control custom-input" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male" {% if form_data and form_data.gender == 'Male' %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if form_data and form_data.gender == 'Female' %}selected{% endif %}>Female</option>
+                                    <option value="Other" {% if form_data and form_data.gender == 'Other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Age</label>
+                                <input type="number" name="age" min="18" step="1" class="form-control custom-input" required value="{{ form_data.age if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Income Salary</label>
+                                <input type="number" name="income_salary" min="0" step="0.01" class="form-control custom-input" value="{{ form_data.income_salary if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Annual Income</label>
+                                <input type="text" name="annual_income" min="0" step="0.01" class="form-control custom-input" required value="{{ '%.0f'|format(form_data.annual_income) if (form_data and form_data.annual_income is not none) else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Bank Balance</label>
+                                <input type="number" name="bank_balance" min="0" step="0.01" class="form-control custom-input" value="{{ form_data.bank_balance if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Loan Amount</label>
+                                <input type="number" name="loan_amount" min="0" step="0.01" class="form-control custom-input" required value="{{ form_data.loan_amount if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Credit Score</label>
+                                <input type="number" name="credit_score" min="0" step="1" class="form-control custom-input" required value="{{ form_data.credit_score if form_data else '' }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="text-white">Employment Status</label>
+                                <select name="employment_status" class="form-control custom-input" required>
+                                    <option value="">Select employment status</option>
+                                    <option value="Salaried" {% if form_data and form_data.employment_status == 'Salaried' %}selected{% endif %}>Salaried</option>
+                                    <option value="Self-Employed" {% if form_data and form_data.employment_status == 'Self-Employed' %}selected{% endif %}>Self-Employed</option>
+                                    <option value="Student" {% if form_data and form_data.employment_status == 'Student' %}selected{% endif %}>Student</option>
+                                    <option value="Unemployed" {% if form_data and form_data.employment_status == 'Unemployed' %}selected{% endif %}>Unemployed</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 text-center mt-4">
+                                <button type="submit" class="btn btn-glow btn-lg px-5">
+                                    Predict Risk
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loader -->
+<div id="loader" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    color:white;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+">
+    <h2>Loading...</h2>
+</div>
+
+<!-- JS -->
+<script>
+function showLoader() {
+    document.getElementById("loader").style.display = "flex";
+}
+
+function validatePredictForm(form) {
+    const nameEl = form.querySelector('[name="name"]');
+    const ageEl = form.querySelector('[name="age"]');
+
+    function clearField(el) {
+        if (!el) return;
+        el.classList.remove('input-invalid');
+        const err = el.parentNode.querySelector('.field-error');
+        if (err) err.textContent = '';
+    }
+
+    function showError(el, msg) {
+        if (!el) return;
+        clearField(el);
+        el.classList.add('input-invalid');
+        let err = el.parentNode.querySelector('.field-error');
+        if (!err) {
+            err = document.createElement('div');
+            err.className = 'field-error';
+            el.parentNode.appendChild(err);
+        }
+        err.textContent = msg;
+        el.focus();
+    }
+
+    // Clear previous errors
+    clearField(nameEl);
+    clearField(ageEl);
+
+    let valid = true;
+
+    // Name: start with capital, letters and spaces only
+    const nameVal = nameEl ? nameEl.value.trim() : '';
+    if (!/^[A-Z][A-Za-z ]+$/.test(nameVal)) {
+        showError(nameEl, 'Full Name must start with a capital letter and contain only letters and spaces.');
+        valid = false;
+    }
+
+    // Age: exactly 2 digits, between 18 and 60
+    const ageVal = ageEl ? ageEl.value.toString().trim() : '';
+    if (!/^\d{2}$/.test(ageVal)) {
+        showError(ageEl, 'Age must contain exactly 2 digits.');
+        valid = false;
+    } else {
+        const ageNum = parseInt(ageVal, 10);
+        if (ageNum < 18 || ageNum > 60) {
+            showError(ageEl, 'Age must be between 18 and 60.');
+            valid = false;
+        }
+    }
+
+    if (valid) {
+        showLoader();
+        return true;
+    }
+    return false;
+}
+</script>
+
+<script>
+// When the user enters `income_salary` treat it as monthly pay and
+// automatically compute `annual_income = income_salary * 12` for display.
+document.addEventListener('DOMContentLoaded', function () {
+    const salaryEl = document.querySelector('[name="income_salary"]');
+    const annualEl = document.querySelector('[name="annual_income"]');
+    if (!salaryEl || !annualEl) return;
+
+    // Optional: make annual income readonly since it's derived
+    try { annualEl.readOnly = true; } catch (e) {}
+
+    function updateAnnual() {
+        const raw = salaryEl.value;
+        if (!raw || raw.toString().trim() === '') {
+            annualEl.value = '';
+            return;
+        }
+        const m = parseFloat(raw.toString().replace(/,/g, ''));
+        if (isNaN(m)) {
+            annualEl.value = '';
+            return;
+        }
+        const annual = m * 12;
+        // Display as integer (no decimal points)
+        annualEl.value = Math.round(annual).toString();
+    }
+
+    salaryEl.addEventListener('input', updateAnnual);
+    salaryEl.addEventListener('change', updateAnnual);
+    // initialize on load if a value exists
+    updateAnnual();
+});
+</script>
+
+</body>
+</html>
